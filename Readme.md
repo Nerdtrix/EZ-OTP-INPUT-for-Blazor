@@ -4,7 +4,8 @@
 EZ OTP Input is an easy way to interact with users to enter their one time password to validate any kind of information required or to have 2 factor authentication.
 
 ![Screenshot](img/2.JPG)  
-![Screenshot](img/1.JPG)
+![Screenshot](img/1.JPG)  
+![Screenshot](img/3.JPG)  
 
 
 ## Features
