@@ -1,0 +1,134 @@
+<div class="otpWrap">
+
+    @foreach (int i in inputSize)
+    {
+        <input 
+            type="text" 
+            maxlength="1" 
+            name="@i"
+            key="@i"
+            value="@inputValue[i]"
+            @oninput="(e) => UpdateValue(i, e)"
+            autofocus="@(i == 0 ? true : false)"
+            class="@(HasError ? "errorBorder" : "") otpInput"
+            @ref="inputRef[i]"
+            @onkeyup="(e) => HandleInput(i, e)"
+            @oncustompaste="(e) => HandlePaste(i, e)"
+        />
+    } 
+    
+</div>
+
+
+@code
+{
+    //Prop params
+    [Parameter] public EventCallback<string> CallBack { get; set; }
+    [Parameter] public bool HasError { get; set;}
+    [Parameter] public int InputLength { get; set;}
+
+    
+    private Dictionary<int, ElementReference> inputRef = new();
+    private Dictionary<int, string> inputValue = new();
+    private List<int> inputSize = new(); 
+
+
+    protected override void OnInitialized()
+    {
+        //Initialize the ditionary and list as empty
+        for (int i = 0; i < InputLength; i++) 
+        {
+            inputSize.Add(i);
+            inputValue.Add(i, string.Empty);
+        }
+    }
+
+
+    /*  
+        This method will handle the clipboard text
+        @param int currentInput
+        @param CustomPasteEventArgs eventArgs
+    */
+    void HandlePaste(int currentInput, CustomPasteEventArgs eventArgs)
+    {
+        string? data = eventArgs.PastedData;
+
+        if(string.IsNullOrEmpty(data)) return;
+
+        bool isInteger = data.All(c => c >= '0' && c <= '9');
+
+        if(data.Length == inputRef.Count() && isInteger)
+        {
+            for (int i = 0; i < data.Length; i++) 
+            {
+                inputValue[i] =  data[i].ToString();
+                inputRef[i].FocusAsync();
+            }
+
+            //Call the callback function
+            CallBack.InvokeAsync(data);
+        }
+        else
+        {
+            inputValue[currentInput] =  string.Empty;
+        }
+    }
+    
+
+    /*
+        This method will Update the value of the current input
+        @param int index
+        @param ChangeEventArgs e
+    */
+    private void UpdateValue(int index, ChangeEventArgs e)
+    {
+        string? value = e.Value?.ToString();
+
+        if(!string.IsNullOrEmpty(value))
+        {
+            inputValue[index] = value;
+        }
+    }
+
+
+    /*
+        This method will handle the currentinput value and move to the next
+        @param int currentInput
+        @Param KeyboardEventArgs e
+    */
+    private void HandleInput(int currentInput, KeyboardEventArgs e)
+    {
+        int maxInput =  inputRef.Count() -1; 
+        int nextInput = currentInput == maxInput ? maxInput : currentInput + 1;
+        int prevInput = currentInput == 0 ? 0 : currentInput - 1;
+        bool deleteRequest = e.Code == "Backspace" || e.Code == "Delete" || e.Code == "ArrowLeft";
+        bool isNumber = e.Key.All(c => c >= '0' && c <= '9');
+
+        if(isNumber)
+        {
+            inputRef[nextInput].FocusAsync();
+        }
+        else
+        {
+            inputValue[currentInput] = string.Empty;
+        }
+
+        if(deleteRequest)
+        {
+            inputRef[prevInput].FocusAsync();
+            inputValue[currentInput] = string.Empty;
+        }
+
+        //When the last box is filled we will get the value and execute the callback function
+        if(currentInput == maxInput && !deleteRequest)
+        {
+            string otpValues = string.Empty;
+
+            //Concat values to the string.
+            inputValue.Select(a => a.Value).ToList().ForEach(b => otpValues += b);
+
+            //Call the callback function
+            CallBack.InvokeAsync(otpValues);
+        }
+    }
+}

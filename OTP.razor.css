@@ -1,0 +1,26 @@
+
+.otpInput{
+    width: 20px;
+    height: 25px;
+    border: none;
+    text-align: center;
+    font-size: 24px;
+}
+
+.otpWrap{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.errorBorder{
+    border: 2px solid #dc3545!important;
+}
+
+input {
+    padding:10px;
+    margin:5px 0 0 0; 
+    border-radius:5px;
+    border: 1px solid #e9ecef;
+    outline:  none;
+}
