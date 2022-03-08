@@ -3,7 +3,8 @@
 ## Overview
 EZ OTP Input is an easy way to interact with users to enter their one time password to validate any kind of information required or to have 2 factor authentication.
 
-
+![Screenshot](img/1.JPG)
+![Screenshot](img/2.JPG)
 
 ## Features
 - Paste data from clipboard
@@ -18,12 +19,13 @@ EZ OTP Input is an easy way to interact with users to enter their one time passw
 - Move the EventHandler.cs anywhere you like and change the namespace
 - Copy the OTP.razor and OTP.razor.css anywhere in your application
 - Call the OTP input from anywhere using the example below.
-`<OTP
+```html
+<OTP
     InputLength="6"
     HasError="false"
     CallBack="@OtpInput"
-/>`
-
+/>
+```
 
 
 ## Credits
