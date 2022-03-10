@@ -35,7 +35,7 @@ This module was inspired and created by [@jerryurenaa](http://jerryurenaa.com)
 
 
 ## License
-EZMAIL is [MIT](https://github.com/Nerdtrix/FetchAsync/blob/main/LICENSE.md) licensed.
+EZ OTP INPUT for Blazor is [MIT](https://github.com/Nerdtrix/FetchAsync/blob/main/LICENSE.md) licensed.
 
 
 ###### Powered by [Nerdtrix.com](http://nerdtrix.com) | Reinventing the wheels for a better future!
